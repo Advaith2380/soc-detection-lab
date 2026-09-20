@@ -1,0 +1,21 @@
+title: Possible SSH Brute Force via High-Volume Port 22 Connections
+id: 7f3a1b2c-8e4d-4a5f-9c6b-1d2e3f4a5b6c
+status: experimental
+description: >
+  Detects a high volume of flows to port 22 with connection duration
+  patterns consistent with automated brute-force login attempts
+  (CICIDS2017 SSH-Patator baseline: avg duration ~6.2s vs ~0.66s benign).
+logsource:
+  category: network
+detection:
+  selection:
+    Destination_Port: 22
+  timeframe: 1h
+  condition: selection | count() > 50
+falsepositives:
+  - Legitimate automated SSH jobs (cron, CI/CD deployments)
+  - Monitoring/health-check scripts polling SSH availability
+level: medium
+tags:
+  - attack.credential_access
+  - attack.t1110
