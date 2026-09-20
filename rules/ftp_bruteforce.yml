@@ -1,0 +1,22 @@
+title: Possible FTP Brute Force via High-Volume Port 21 Connections
+id: 3d8e2f1a-6b9c-4e7d-a1f2-5c8b3d9e4f6a
+status: experimental
+description: >
+  Detects a high volume of flows to port 21 with abnormally long
+  connection duration relative to packet count, consistent with
+  automated brute-force login attempts (CICIDS2017 FTP-Patator
+  baseline: avg duration ~4.5s vs ~0.12s benign).
+logsource:
+  category: network
+detection:
+  selection:
+    Destination_Port: 21
+  timeframe: 1h
+  condition: selection | count() > 50
+falsepositives:
+  - Legitimate automated FTP jobs (scheduled backups, file syncs)
+  - Slow network links causing naturally longer session durations
+level: medium
+tags:
+  - attack.credential_access
+  - attack.t1110
