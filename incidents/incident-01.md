@@ -36,6 +36,12 @@ the known brute-force testing scenario built into the dataset.
 
 Splunk query used:
 
+```
+
+index=cicids2017 Label="SSH-Patator" | stats count avg("Flow Duration") avg("Total Fwd Packets") by "Destination Port"
+
+```
+
 
 
 \## Analysis
