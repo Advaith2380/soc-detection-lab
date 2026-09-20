@@ -1,0 +1,22 @@
+title: Possible DoS Hulk Attack via High-Volume Low-Packet HTTP Flows
+id: 9a2c4e6b-1f3d-4b8a-9e5c-7d1a2f4b6c8e
+status: experimental
+description: >
+  Detects a high volume of HTTP flows (port 80) with long duration but
+  abnormally low packet counts, consistent with DoS Hulk-style flooding
+  (CICIDS2017 baseline: avg 5.28 packets/flow vs 57.4 benign, despite
+  longer average duration).
+logsource:
+  category: network
+detection:
+  selection:
+    Destination_Port: 80
+  timeframe: 1h
+  condition: selection | count() > 1000
+falsepositives:
+  - Legitimate high-traffic web services during peak load
+  - Load testing or synthetic monitoring tools
+level: high
+tags:
+  - attack.impact
+  - attack.t1499
