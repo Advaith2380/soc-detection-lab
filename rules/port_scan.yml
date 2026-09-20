@@ -1,0 +1,24 @@
+title: Possible Port Scan via High Distinct-Port Count with Single-Packet Flows
+id: 5b7d9e2f-3a1c-4d6b-8e9f-2c4a6b8d1e3f
+status: experimental
+description: >
+  Detects reconnaissance activity where a source touches a very high
+  number of distinct destination ports, each with minimal packet
+  exchange, consistent with automated port scanning (CICIDS2017
+  PortScan baseline: 1000 distinct ports, avg 1.02 packets/flow,
+  avg duration ~0.08s).
+logsource:
+  category: network
+detection:
+  selection:
+    distinct_destination_ports: '> 50'
+    avg_packets_per_flow: '< 3'
+  timeframe: 1h
+  condition: selection
+falsepositives:
+  - Legitimate network/vulnerability scanning tools (Nmap, Nessus) run by authorized security teams
+  - Service discovery tools in dynamic cloud environments
+level: high
+tags:
+  - attack.discovery
+  - attack.t1046
